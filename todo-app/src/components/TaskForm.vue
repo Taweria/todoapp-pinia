@@ -1,10 +1,10 @@
 <script setup>
 import { v4 as uuid } from 'uuid'
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 import { useTasksStore } from '../store/tasks';
 
-const name = computed(() => taskStore.selectedTask ? taskStore.selectedTask.name : '');
-const description = computed(() => taskStore.selectedTask ? taskStore.selectedTask.description : '');
+const name = ref('');
+const description = ref('');
 const taskStore = useTasksStore();
 
 function handleFormSubmit() {
