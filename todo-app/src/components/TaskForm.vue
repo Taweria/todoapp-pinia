@@ -10,8 +10,8 @@ const taskStore = useTasksStore();
 function handleFormSubmit() {
   const task = {
       id: taskStore.selectedTask ? taskStore.selectedTask.id : uuid(),
-      name: name.value,
-      description: description.value,
+      name: taskStore.selectedTask ? taskStore.selectedTask.name : name.value,
+      description: taskStore.selectedTask ? taskStore.selectedTask.description : description.value,
       completed: false
   };
 
@@ -36,14 +36,14 @@ function cancelUpdate() {
     _clearForm();
 }
 
-taskStore.$subscribe((mutation) => {
-    const selectedTask = mutation.events.target.selectedTask;
+// taskStore.$subscribe((mutation) => {
+//     const selectedTask = mutation.events.target.selectedTask;
 
-    if(selectedTask) {
-        name.value = selectedTask.name;
-        description.value = selectedTask.description;
-    }
-});
+//     if(selectedTask) {
+//         name.value = selectedTask.name;
+//         description.value = selectedTask.description;
+//     }
+// });
 </script>
 
 <template>
@@ -53,6 +53,13 @@ taskStore.$subscribe((mutation) => {
     </h1>
     <div class="mb-6">
       <input
+        v-if="taskStore.selectedTask"
+        v-model="taskStore.selectedTask.name"
+        placeholder="Name"
+        class="inline-flex w-full px-2 py-3 rounded-lg border-2 border-gray-300 focus:outline-none"
+      />
+      <input
+        v-else
         v-model="name"
         placeholder="Name"
         class="inline-flex w-full px-2 py-3 rounded-lg border-2 border-gray-300 focus:outline-none"
@@ -60,6 +67,14 @@ taskStore.$subscribe((mutation) => {
     </div>
     <div class="mb-6">
       <textarea
+        v-if="taskStore.selectedTask"
+        v-model="taskStore.selectedTask.description"
+        placeholder="Description of the task"
+        class="inline-flex w-full px-3 py-4 rounded-lg border-2 border-gray-300 focus:outline-none"
+        rows="6"
+      ></textarea>
+      <textarea
+        v-else
         v-model="description"
         placeholder="Description of the task"
         class="inline-flex w-full px-3 py-4 rounded-lg border-2 border-gray-300 focus:outline-none"
